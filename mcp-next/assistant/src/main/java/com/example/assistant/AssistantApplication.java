@@ -43,7 +43,7 @@ public class AssistantApplication {
     }
 
     @Bean
-    public ChatClient chatClient(
+    ChatClient chatClient(
             PromptChatMemoryAdvisor memoryAdvisor,
             QuestionAnswerAdvisor questionAnswerAdvisor,
             ChatClient.Builder chatClientBuilder) {
@@ -80,7 +80,7 @@ public class AssistantApplication {
                 .build();
     }
 
-    //    @Bean
+    // @Bean
     ApplicationRunner vectorize(VectorStore vectorStore, DogRepository repository) {
         return _ -> repository
                 .findAll()
@@ -126,7 +126,7 @@ class AssistantController {
     }
 
     @McpProgress(clients = "conference-assistant")
-	public void progressHandler(ProgressNotification progressNotification) {
+	void progressHandler(ProgressNotification progressNotification) {
 		System.out.println("MCP PROGRESS: [" 
 			+ progressNotification.progressToken() + "] progress: " 
 			+ progressNotification.progress()+ " total: "+progressNotification.total()
@@ -134,17 +134,16 @@ class AssistantController {
 	}
 
 	@McpLogging(clients = "conference-assistant")
-	public void loggingHandler(LoggingMessageNotification loggingMessage) {
+	void loggingHandler(LoggingMessageNotification loggingMessage) {
 		System.out.println("MCP LOGGING: [" 
 			+ loggingMessage.level() + "] " 
 			+ loggingMessage.data());
 	}
 
 	@McpSampling(clients = "conference-assistant")
-	public CreateMessageResult samplingHandler(CreateMessageRequest llmRequest) {
-		// logger.info("MCP SAMPLING: {}", llmRequest);
+	CreateMessageResult samplingHandler(CreateMessageRequest llmRequest) {
 
-		String userPrompt = ((McpSchema.TextContent) llmRequest.messages().get(0).content()).text();
+		var userPrompt = ((McpSchema.TextContent) llmRequest.messages().get(0).content()).text();
 
 		var samplingResponse = ai.prompt(userPrompt).call().content();
 
@@ -152,8 +151,6 @@ class AssistantController {
 				.content(new McpSchema.TextContent("Response " + samplingResponse))
 				.build();
 	}
-
-
 }
 
 

@@ -8,4 +8,5 @@ services:
     labels:
       - "org.springframework.boot.service-connection=postgres"
     ports:
-      - '5432'
+      - '5432:5432'
+

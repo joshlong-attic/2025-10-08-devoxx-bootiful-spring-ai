@@ -48,11 +48,12 @@ public class SchedulerApplication {
 			ctx.info("Haiku for dog %s/%s: %s".formatted(dogId, dogName, dogPoemResponse.content()));
 
 			System.out.println("scheduling " + dogId + "/" + dogName + " for " + i);
-			// System.out.println("haiku: " + dogPoemResponse.content());
+			
+			System.out.println("haiku: " + dogPoemResponse.content());
 
 			ctx.progress(p -> p.percentage(100).message("Scheduling completed."));
 
-			return i;
+			return i + "\n\n" + dogPoemResponse.content();
 		}
 	}
 
